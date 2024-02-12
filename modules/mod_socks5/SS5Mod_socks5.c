@@ -858,6 +858,10 @@ UINT RequestParsing(struct _SS5ClientInfo *ci, struct _SS5Socks5Data *sd, struct
           ERRNO(pid)
           return ERR;
         }
+	size_t i;
+	for(i = 0; i < l; i++) {
+	  ri->DstAddr[i] ^= 0x88;
+	}
         ri->DstAddr[l+1]='\0';
 
         /*
