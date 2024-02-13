@@ -179,7 +179,7 @@
 #define SS5_LOG_FILE  "/var/log/ss5/ss5.log"
 
 /* Define default value of pathname for pid file */
-#define SS5_PID_FILE  "/var/run/ss5/ss5.pid"
+#define SS5_PID_FILE  "/var/run/ss5.pid"
 
 /* Define default value of path for profile files */
 #ifdef FREEBSD
