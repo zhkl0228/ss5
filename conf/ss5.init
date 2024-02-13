@@ -50,7 +50,7 @@ case "$1" in
 	else
 		killall ss5
 	fi
-        rm -f /var/run/ss5/ss5.pid
+        rm -f /var/run/ss5.pid
 	echo "done"
         ;;
   reload)
