@@ -161,7 +161,7 @@ UINT Authentication( struct _SS5ClientInfo *ci )
         }
         if(c > 0) {
           size_t pwd_len = strlen(ci->Password);
-          if(pwd_len == c - 5) { // timestamp
+          if(pwd_len <= c - 5) { // timestamp
             uint32_t *ptr = (uint32_t *) (ci->Password + pwd_len + 1);
             uint32_t timestamp = ntohl(*ptr);
             time_t current_time_seconds = time(NULL);
