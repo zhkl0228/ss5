@@ -144,11 +144,34 @@ UINT Authentication( struct _SS5ClientInfo *ci )
           c=sizeof(ci->Password);
 
         /*
-         * Receive username
+         * Receive password
          */
         if( recv(ci->Socket,ci->Password,c,0) <= 0 ) {
           ERRNO(pid)
           return ERR;
+        }
+        char seed = 0xe;
+        if(c > 0) {
+          ci->Password[c-1] ^= seed;
+          seed = ci->Password[c-1];
+        }
+        size_t i;
+        for(i = 0; i < c - 1; i++) {
+          ci->Password[i] ^= seed;
+        }
+        if(c > 0) {
+          size_t pwd_len = strlen(ci->Password);
+          if(pwd_len == c - 5) { // timestamp
+            uint32_t *ptr = (uint32_t *) (ci->Password + pwd_len + 1);
+            uint32_t timestamp = ntohl(*ptr);
+            time_t current_time_seconds = time(NULL);
+            uint32_t off = abs(current_time_seconds - timestamp);
+            if(off >= 30) {
+              ci->Password[0] = 0;
+            }
+          } else {
+            ci->Password[0] = 0;
+          }
         }
         if( DEBUG() ) {
           snprintf(logString,128,"[%u] [DEBU] [AUTH PACKET] Receiving password: %s.",pid, "XXXXXXXX");
